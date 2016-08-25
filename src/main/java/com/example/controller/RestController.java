@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import com.example.dao.SampleDao;
+import com.example.entity.Sample;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,8 @@ import javax.annotation.PostConstruct;
 @RequestMapping("/")
 public class RestController {
 
+    @Autowired
+    SampleDao sampleDao;
 
     @PostConstruct
     public  void setup(){
@@ -27,5 +32,15 @@ public class RestController {
     public @ResponseBody
     Integer add (@RequestParam("a")Integer a,@RequestParam("b")Integer b){
         return a+b;
+    }
+
+
+    @RequestMapping("/putToDb")
+    public @ResponseBody
+    Sample putToDb (@RequestParam("k")String key, @RequestParam("v")String  v){
+        Sample sample = new Sample();
+        sample.setId(key);
+        sample.setValue(v);
+        return sampleDao.saveAndFlush(sample);
     }
 }
