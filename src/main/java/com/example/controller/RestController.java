@@ -1,13 +1,12 @@
 package com.example.controller;
 
 import com.example.dao.SampleDao;
+import com.example.dto.PutToJobReq;
 import com.example.entity.Sample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 
@@ -41,6 +40,17 @@ public class RestController {
         Sample sample = new Sample();
         sample.setId(key);
         sample.setValue(v);
+        return sampleDao.saveAndFlush(sample);
+    }
+
+    @RequestMapping(value = "/putToDb",method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Sample putToDb(@RequestBody PutToJobReq req){
+        Sample sample = new Sample();
+        sample.setId(req.getKey());
+        sample.setValue(req.getValue());
         return sampleDao.saveAndFlush(sample);
     }
 }
