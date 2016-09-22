@@ -3,6 +3,8 @@ package com.example;
 import com.example.service.Add;
 import com.example.service.AddService;
 
+import com.example.service.Hello;
+import com.example.service.HelloService;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
@@ -46,6 +48,11 @@ public class WsDemoApplication {
 			return new AddService();
 		}
 
+		@Bean
+		public Hello helloServiceImpl(){
+			return new HelloService();
+		}
+
 		//use cxf
 
 		@Bean
@@ -64,6 +71,20 @@ public class WsDemoApplication {
 			Object implementor = addService;
 			EndpointImpl endpoint = new EndpointImpl(bus, implementor);
 			endpoint.publish("/hello");
+			//endpoint.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
+			//endpoint.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+			return endpoint;
+		}
+
+
+		@Bean
+		// <jaxws:endpoint id="helloWorld" implementor="demo.spring.service.HelloWorldImpl" address="/HelloWorld"/>
+		@Autowired
+		public EndpointImpl helloService2(Hello service) {
+			Bus bus = (Bus) applicationContext.getBean(Bus.DEFAULT_BUS_ID);
+			Object implementor = service;
+			EndpointImpl endpoint = new EndpointImpl(bus, implementor);
+			endpoint.publish("/hello2");
 			//endpoint.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
 			//endpoint.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
 			return endpoint;

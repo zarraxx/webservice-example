@@ -26,6 +26,11 @@ public class RestController {
     }
 
 
+    @RequestMapping("/test")
+    public @ResponseBody  String test(@RequestBody String who){
+        return who;
+    }
+
 
     @RequestMapping("/add")
     public @ResponseBody
@@ -43,7 +48,7 @@ public class RestController {
         return sampleDao.saveAndFlush(sample);
     }
 
-    @RequestMapping(value = "/putToDb",method = RequestMethod.POST,
+    @RequestMapping(path = "/putToDb",method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

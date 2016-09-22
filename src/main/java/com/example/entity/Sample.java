@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +17,7 @@ public class Sample {
     String value;
 
     @Id
+    @JacksonXmlProperty(localName = "iiid")
     public String getId() {
         return id;
     }
